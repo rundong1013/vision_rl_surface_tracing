@@ -1,5 +1,6 @@
 import numpy as np
 import os
+
 # Generate the 6 faces of a cube, sampled uniformly
 def generate_cube_surface(edge_length=0.2, resolution=10):
     half = edge_length / 2
@@ -15,7 +16,7 @@ def generate_cube_surface(edge_length=0.2, resolution=10):
                 else:
                     coords[:, i] = grid.pop(0).flatten()
             faces.append(coords)
-    return np.vstack(faces) 
+    return np.vstack(faces)
 
 # Generate a cylinder surface including side + top and bottom circles
 def generate_cylinder_surface(radius=0.1, height=0.2, radial_res=30, height_res=10):
@@ -39,8 +40,8 @@ def generate_cylinder_surface(radius=0.1, height=0.2, radial_res=30, height_res=
 
     return np.vstack([side] + top_bottom)
 
-# Apply random scaling and rotation to point cloud
-def apply_random_transform(points, scale_range=(0.5, 1.5), rot_deg_range=(-45, 45)):
+# Apply random scaling, rotation, and Gaussian noise to point cloud
+def apply_random_transform(points, scale_range=(0.5, 1.5), rot_deg_range=(-45, 45), noise_std=0.002):
     scale = np.random.uniform(*scale_range)
     points = points * scale
 
@@ -55,9 +56,15 @@ def apply_random_transform(points, scale_range=(0.5, 1.5), rot_deg_range=(-45, 4
                    [np.sin(angles[2]), np.cos(angles[2]), 0],
                    [0, 0, 1]])
     R = Rz @ Ry @ Rx
-    return points @ R.T
+    transformed = points @ R.T
 
-# Save point cloud as pcd file
+    # Add Gaussian noise
+    noise = np.random.normal(scale=noise_std, size=transformed.shape)
+    transformed += noise
+
+    return transformed
+
+# Save point cloud as .pcd file
 def save_pcd(filename, points):
     with open(filename, 'w') as f:
         f.write("# .PCD v0.7 - Point Cloud Data file format\n")
@@ -74,6 +81,7 @@ def save_pcd(filename, points):
         for p in points:
             f.write(f"{p[0]} {p[1]} {p[2]}\n")
 
+# Main generation loop
 os.makedirs("generated_pcds", exist_ok=True)
 
 for shape in ["cube", "cylinder"]:
@@ -82,7 +90,7 @@ for shape in ["cube", "cylinder"]:
             base = generate_cube_surface()
         else:
             base = generate_cylinder_surface()
-        transformed = apply_random_transform(base)
+        transformed = apply_random_transform(base, noise_std=0.003)
         filename = f"generated_pcds/{shape}_{i}.pcd"
         save_pcd(filename, transformed)
         print(f"Saved {filename} with {len(transformed)} points.")
