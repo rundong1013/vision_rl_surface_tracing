@@ -103,14 +103,14 @@ The following are surface coverage visualizations generated during evaluation us
 
 <table>
   <tr>
-    <td><img src="outputs/example/cube_0_coverage.png" width="300"/></td>
-    <td><img src="outputs/example/cube_1_coverage.png" width="300"/></td>
-    <td><img src="outputs/example/cube_2_coverage.png" width="300"/></td>
+    <td><img src="outputs/example/cube_0_coverage.png" width="400"/></td>
+    <td><img src="outputs/example/cube_1_coverage.png" width="400"/></td>
+    <td><img src="outputs/example/cube_2_coverage.png" width="400"/></td>
   </tr>
   <tr>
-    <td><img src="outputs/example/cylinder_0_coverage.png" width="300"/></td>
-    <td><img src="outputs/example/cylinder_1_coverage.png" width="300"/></td>
-    <td><img src="outputs/example/cylinder_2_coverage.png" width="300"/></td>
+    <td><img src="outputs/example/cylinder_0_coverage.png" width="400"/></td>
+    <td><img src="outputs/example/cylinder_1_coverage.png" width="400"/></td>
+    <td><img src="outputs/example/cylinder_2_coverage.png" width="400"/></td>
   </tr>
 </table>
 
